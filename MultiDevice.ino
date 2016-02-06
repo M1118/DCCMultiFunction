@@ -10,7 +10,7 @@
  *
  * A DCC decoder designed to drive a variety of devices, a mix of RC Servos, Stepper Motor and DC motor
  */
-#define DCC_VERSION_ID  11
+#define DCC_VERSION_ID  12
 
 #define DEBUG           0    // Enable debug output on the serial interface
 #define DEBUG_CV        0    // Enable output of CV relates debug
@@ -179,9 +179,9 @@ unsigned int functions[28];
 // on the power supply for 6ms to ACK a CV Read 
 void notifyCVAck(void)
 {
-  digitalWrite( DccAckPin, HIGH );
-  delay( 6 );  
-  digitalWrite( DccAckPin, LOW );
+  digitalWrite(DccAckPin, HIGH);
+  delay(6);  
+  digitalWrite(DccAckPin, LOW);
 }
 
 /*
@@ -261,15 +261,25 @@ void notifyCVChange( uint16_t CV, uint8_t value)
       break;
     case CV_STEPS:
       {
-      DCCStepper *newStepper = new DCCStepper(Dcc.getCV(CV_RATIO) * value,
+      unsigned int maxSteps = ((unsigned int)Dcc.getCV(CV_MAXMSB) * 256) + Dcc.getCV(CV_MAXLSB);
+      DCCStepper *newStepper = new DCCStepper(Dcc.getCV(CV_STEPMODE), maxSteps,
+                Dcc.getCV(CV_RATIO) * Dcc.getCV(CV_STEPS),
                 Dcc.getCV(CV_MAXRPM), stepperPins[0], stepperPins[1], stepperPins[2], stepperPins[3]);
+      unsigned int currentStep = ((unsigned int)Dcc.getCV(CV_CURMSB) * 256) + Dcc.getCV(CV_CURLSB);
+      newStepper->setCurrentPosition(currentStep);
+      delete stepper;
       stepper = newStepper;
       }
       break;
     case CV_RATIO:
       {
-      DCCStepper *newStepper = new DCCStepper(value * Dcc.getCV(CV_STEPS),
+      unsigned int maxSteps = ((unsigned int)Dcc.getCV(CV_MAXMSB) * 256) + Dcc.getCV(CV_MAXLSB);
+      DCCStepper *newStepper = new DCCStepper(Dcc.getCV(CV_STEPMODE), maxSteps,
+                Dcc.getCV(CV_RATIO) * Dcc.getCV(CV_STEPS),
                 Dcc.getCV(CV_MAXRPM), stepperPins[0], stepperPins[1], stepperPins[2], stepperPins[3]);
+      unsigned int currentStep = ((unsigned int)Dcc.getCV(CV_CURMSB) * 256) + Dcc.getCV(CV_CURLSB);
+      newStepper->setCurrentPosition(currentStep);
+      delete stepper;
       stepper = newStepper;
       }
       break;
@@ -297,6 +307,7 @@ void notifyCVChange( uint16_t CV, uint8_t value)
       functions[value] |= FNPWM;
       break;
     case CV_L0EFFECT:
+      delete light0;
       light0 = new DCCLight(lightPins[0], value);
       break;
     case CV_L0PERIOD:
@@ -308,6 +319,7 @@ void notifyCVChange( uint16_t CV, uint8_t value)
       functions[value] |= FNLIGHT0;
       break;
     case CV_L1EFFECT:
+      delete light1;
       light1 = new DCCLight(lightPins[1], value);
       break;
     case CV_L1PERIOD:
@@ -319,6 +331,7 @@ void notifyCVChange( uint16_t CV, uint8_t value)
       functions[value] |= FNLIGHT1;
       break;
     case CV_L2EFFECT:
+      delete light2;
       light2 = new DCCLight(lightPins[2], value);
       break;
     case CV_L2PERIOD:
@@ -330,6 +343,7 @@ void notifyCVChange( uint16_t CV, uint8_t value)
       functions[value] |= FNLIGHT2;
       break;
     case CV_L3EFFECT:
+      delete light3;
       light3 = new DCCLight(lightPins[3], value);
       break;
     case CV_L3PERIOD:
@@ -342,6 +356,10 @@ void notifyCVChange( uint16_t CV, uint8_t value)
       break;
     case CV_MULTIFUNCTION_PRIMARY_ADDRESS:
       MyAddress = value;
+      break;
+    case CV_MULTIFUNCTION_EXTENDED_ADDRESS_LSB:
+    case CV_MULTIFUNCTION_EXTENDED_ADDRESS_MSB:
+    case CV_29_CONFIG:
       break;
   }
 }
