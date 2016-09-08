@@ -5,15 +5,17 @@
 #include <DCCStepper.h>
 #include <DCCLight.h>
 
+#define HASPWM 0
 /*
  * DCC Mixed Device Decoder
  *
  * A DCC decoder designed to drive a variety of devices, a mix of RC Servos, Stepper Motor and DC motor
  */
-#define DCC_VERSION_ID  12
+#define DCC_VERSION_ID  18
 
 #define DEBUG           0    // Enable debug output on the serial interface
-#define DEBUG_CV        0    // Enable output of CV relates debug
+#define DEBUGCV         0    // Enable output of CV relates debug
+#define DEBUGACK        0    // Enable debug for sending DCC Acknowledge
 #define BAUDRATE     9600
 /*
  * Arduino pin assignments
@@ -21,17 +23,35 @@
 const int DccAckPin = 3;
 const int DccInPin = 2;
 const int servoPins[] = { 4, 5, 6 };
-const int stepperPins[] = { A0, A1, A2, A3 };
+const int stepperPins[] = { A2, A3, A4, A5 };
+#if HASPWM
 const int pwmPins[] = { 11, 12 };
-const int lightPins[] = { 7, 8, 9, 10 };
+#endif
+const int lightPins[] = { 7, 8, 10, 11 };
 
+/*
+ * Set the below to 0 if an ack is sent by taking the DccAckPin high
+ * Set the below to 1 if an ack is sent by taking the DccAckPin low
+ */
+#define INVERTED_ACK  0
+/*
+ * Set the below to 0 if servo power is on by taking CONTROL high
+ * Set the below to 1 if servo power is on by taking CONTROL low
+ */
+#define INVERTED_CTL  0
 /*
  * Power up control
  */
-#define CONTROL  13      // Pin to take low after power-up delay
+#define CONTROL  9      // Pin to take low after power-up delay
+
+#define LED      13
 
 unsigned long startms = 0;
 boolean poweron = false;
+boolean dcc_watchdog = false;
+int ledState = LOW;
+int powerNotify = 0;
+unsigned long skip_millis = 0;
 
 NmraDcc     Dcc;
 DCC_MSG     Packet;
@@ -62,40 +82,47 @@ int MyAddress;
 #define CV_S0TRAVEL    32
 #define CV_S0FLAGS     33
 #define CV_S0FUNC      34
-#define CV_S1LIMIT0    35
-#define CV_S1LIMIT1    36
-#define CV_S1TRAVEL    37
-#define CV_S1FLAGS     38
-#define CV_S1FUNC      39
-#define CV_S2LIMIT0    40
-#define CV_S2LIMIT1    41
-#define CV_S2TRAVEL    42
-#define CV_S2FLAGS     43
-#define CV_S2FUNC      44
-#define CV_STEPS       50
-#define CV_RATIO       51
-#define CV_MAXRPM      52
-#define CV_STEPFUNC    53
-#define CV_STEPMODE    54
-#define CV_MAXLSB      55
-#define CV_MAXMSB      56
-#define CV_CURLSB      57
-#define CV_CURMSB      58
-#define CV_MAXPWM      60
-#define CV_PWMFUNC     61
-#define CV_PWRDELAY    62
-#define CV_L0EFFECT    65
-#define CV_L0PERIOD    66
-#define CV_L0FUNC      67
-#define CV_L1EFFECT    70
-#define CV_L1PERIOD    71
-#define CV_L1FUNC      72
-#define CV_L2EFFECT    75
-#define CV_L2PERIOD    76
-#define CV_L2FUNC      77
-#define CV_L3EFFECT    80
-#define CV_L3PERIOD    81
-#define CV_L3FUNC      82
+#define CV_S0BOUNCE    35
+#define CV_S0POSITION  36
+#define CV_S1LIMIT0    40
+#define CV_S1LIMIT1    41
+#define CV_S1TRAVEL    42
+#define CV_S1FLAGS     43
+#define CV_S1FUNC      44
+#define CV_S1BOUNCE    45
+#define CV_S1POSITION  36
+#define CV_S2LIMIT0    50
+#define CV_S2LIMIT1    51
+#define CV_S2TRAVEL    52
+#define CV_S2FLAGS     53
+#define CV_S2FUNC      54
+#define CV_S2BOUNCE    55
+#define CV_S2POSITION  36
+#define CV_STEPS       60
+#define CV_RATIO       61
+#define CV_MAXRPM      62
+#define CV_STEPFUNC    63
+#define CV_STEPMODE    64
+#define CV_MAXLSB      65
+#define CV_MAXMSB      66
+#define CV_STEPDELAY   67
+#define CV_CURLSB      68
+#define CV_CURMSB      69
+#define CV_MAXPWM      70
+#define CV_PWMFUNC     71
+#define CV_PWRDELAY    72
+#define CV_L0EFFECT    75
+#define CV_L0PERIOD    76
+#define CV_L0FUNC      77
+#define CV_L1EFFECT    80
+#define CV_L1PERIOD    81
+#define CV_L1FUNC      82
+#define CV_L2EFFECT    85
+#define CV_L2PERIOD    86
+#define CV_L2FUNC      87
+#define CV_L3EFFECT    90
+#define CV_L3PERIOD    91
+#define CV_L3FUNC      92
 
 /*
  * The factory default CV values
@@ -108,20 +135,23 @@ CVPair FactoryDefaultCVs [] =
   {CV_VERSION_ID, DCC_VERSION_ID},
   {CV_MANUFACTURER_ID, MAN_ID_DIY},
   {CV_S0LIMIT0, 10},
-  {CV_S0LIMIT1,  90},
+  {CV_S0LIMIT1,  120},
   {CV_S0TRAVEL, 10},
   {CV_S0FLAGS, SERVO_INITMID},
   {CV_S0FUNC, 0},
+  {CV_S0BOUNCE, 8},
   {CV_S1LIMIT0, 10},
   {CV_S1LIMIT1, 90},
   {CV_S1TRAVEL, 10},
   {CV_S1FLAGS, SERVO_INITMID},
   {CV_S1FUNC, 1},
+  {CV_S1BOUNCE, 8},
   {CV_S2LIMIT0, 0},
   {CV_S2LIMIT1, 180},
   {CV_S2TRAVEL, 10},
   {CV_S2FLAGS, SERVO_INITMID},
   {CV_S2FUNC, 2},
+  {CV_S2BOUNCE, 8},
   {CV_STEPS, 8},
   {CV_RATIO, 64},
   {CV_MAXRPM, 60},
@@ -129,6 +159,7 @@ CVPair FactoryDefaultCVs [] =
   {CV_STEPMODE, 0},
   {CV_MAXLSB, 232},
   {CV_MAXMSB, 3},
+  {CV_STEPDELAY, 10},
   {CV_MAXPWM, 255},
   {CV_PWMFUNC, 4},
   {CV_PWRDELAY, 50},
@@ -155,6 +186,21 @@ static uint8_t FactoryDefaultCVIndex = sizeof(FactoryDefaultCVs) / sizeof(CVPair
 static uint8_t FactoryDefaultCVIndex = 0;
 #endif
 
+#if INVERTED_ACK
+#define ACK_OFF   HIGH
+#define ACK_ON    LOW
+#else
+#define ACK_OFF   LOW
+#define ACK_ON    HIGH
+#endif
+
+#if INVERTED_CTL
+#define PWR_OFF   HIGH
+#define PWR_ON    LOW
+#else
+#define PWR_OFF   LOW
+#define PWR_ON    HIGH
+#endif
 /*
  * The function map.
  * This is an array of bitmasks used to determine the function
@@ -179,9 +225,12 @@ unsigned int functions[28];
 // on the power supply for 6ms to ACK a CV Read 
 void notifyCVAck(void)
 {
-  digitalWrite(DccAckPin, HIGH);
-  delay(6);  
-  digitalWrite(DccAckPin, LOW);
+  digitalWrite(DccAckPin, ACK_ON);
+  delay(6);
+  digitalWrite(DccAckPin, ACK_OFF);
+#if DEBUGACK
+  Serial.println("CVAck");
+#endif
 }
 
 /*
@@ -198,6 +247,7 @@ void notifyCVChange( uint16_t CV, uint8_t value)
   Serial.println(value);
 #endif
 
+  dcc_watchdog = true;
   switch (CV)
   {
     case CV_S0LIMIT0:
@@ -220,6 +270,10 @@ void notifyCVChange( uint16_t CV, uint8_t value)
         functions[i] &= (~FNSERVO0);
       functions[value % 13] |= FNSERVO0;
       break;
+    case CV_S0BOUNCE:
+      if (servo1)
+        servo1->setBounceAngle(value);
+        break;
     case CV_S1LIMIT0:
       if (servo2)
         servo2->setStart(value);
@@ -240,6 +294,10 @@ void notifyCVChange( uint16_t CV, uint8_t value)
         functions[i] &= (~FNSERVO1);
       functions[value % 13] |= FNSERVO1;
       break;
+    case CV_S1BOUNCE:
+      if (servo2)
+        servo2->setBounceAngle(value);
+        break;
     case CV_S2LIMIT0:
       servo3->setStart(value);
       break;
@@ -259,6 +317,10 @@ void notifyCVChange( uint16_t CV, uint8_t value)
         functions[i] &= (~FNSERVO2);
       functions[value % 13] |= FNSERVO2;
       break;
+    case CV_S2BOUNCE:
+      if (servo3)
+        servo3->setBounceAngle(value);
+        break;
     case CV_STEPS:
       {
       unsigned int maxSteps = ((unsigned int)Dcc.getCV(CV_MAXMSB) * 256) + Dcc.getCV(CV_MAXLSB);
@@ -297,15 +359,20 @@ void notifyCVChange( uint16_t CV, uint8_t value)
     case CV_MAXMSB:
       stepper->setMaxStepsMSB(value);
       break;
+    case CV_STEPDELAY:
+      stepper->setReverseDelay(value);
+      break;
     case CV_MAXRPM:
       if (stepper)
         stepper->setRPM(value);
       break;
+#if HASPWM
     case CV_PWMFUNC:
       for (i = 0; i < 28; i++)
         functions[i] &= (~FNPWM);
       functions[value] |= FNPWM;
       break;
+#endif
     case CV_L0EFFECT:
       delete light0;
       light0 = new DCCLight(lightPins[0], value);
@@ -383,6 +450,7 @@ void notifyDccSpeed( uint16_t Addr, uint8_t Speed, uint8_t ForwardDir, uint8_t S
   Serial.print(percentage);
   Serial.println("%");
 #endif
+  dcc_watchdog = true;
   if (servo1 && servo1->isAbsolute())
     servo1->setPosition(percentage);
   else if (servo1)
@@ -397,6 +465,8 @@ void notifyDccSpeed( uint16_t Addr, uint8_t Speed, uint8_t ForwardDir, uint8_t S
     servo3->setSpeed(percentage, ForwardDir != 0);
   if (stepper)
     stepper->setSpeed(percentage, ForwardDir != 0);
+    
+#if HASPWM
   if (motorAttached)
   {
      if (ForwardDir)
@@ -410,6 +480,7 @@ void notifyDccSpeed( uint16_t Addr, uint8_t Speed, uint8_t ForwardDir, uint8_t S
        analogWrite(pwmPins[0], percentage);
      }
   }
+#endif
   if (light0)
   {
     light0->setBrightness(percentage);
@@ -467,6 +538,7 @@ static void SetFuncState(int function, boolean state)
 #endif
     stepper->setActive(state);
   }
+#if HASPWM
   if (functions[function] & FNPWM)
   {
 #if DEBUG
@@ -479,6 +551,7 @@ static void SetFuncState(int function, boolean state)
       digitalWrite(pwmPins[1], LOW);
     }
   }
+#endif
   if ((functions[function] & FNLIGHT0) && light0)
   {
 #if DEBUG
@@ -514,6 +587,7 @@ static void SetFuncState(int function, boolean state)
  */
 void notifyDccFunc( uint16_t Addr, uint8_t FuncNum, uint8_t FuncState)
 {
+  dcc_watchdog = true;
   if (FuncNum == 1)
   {
     /* Function group 1 */
@@ -610,6 +684,42 @@ void notifyDccFunc( uint16_t Addr, uint8_t FuncNum, uint8_t FuncState)
     else
       SetFuncState(20, false);
   }
+  else if (FuncNum == 4)
+  {
+    /* Function group 3 */
+    if (FuncState & 0x01)
+      SetFuncState(21, true);
+    else
+      SetFuncState(21, false);
+    if (FuncState & 0x02)
+      SetFuncState(22, true);
+    else
+      SetFuncState(22, false);
+    if (FuncState & 0x04)
+      SetFuncState(23, true);
+    else
+      SetFuncState(23, false);
+    if (FuncState & 0x08)
+      SetFuncState(24, true);
+    else
+      SetFuncState(24, false);
+    if (FuncState & 0x10)
+      SetFuncState(25, true);
+    else
+      SetFuncState(25, false);
+    if (FuncState & 0x20)
+      SetFuncState(26, true);
+    else
+      SetFuncState(26, false);
+    if (FuncState & 0x40)
+      SetFuncState(27, true);
+    else
+      SetFuncState(27, false);
+    if (FuncState & 0x80)
+      SetFuncState(28, true);
+    else
+      SetFuncState(28, false);
+  }
 }
 
 void notifyStepperPosition(DCCStepper *motor, unsigned int position)
@@ -618,6 +728,22 @@ void notifyStepperPosition(DCCStepper *motor, unsigned int position)
   {
     Dcc.setCV(CV_CURLSB, position & 0xff);
     Dcc.setCV(CV_CURMSB, (position >> 8) & 0xff);
+  }
+}
+
+void notifyServoPosition(DCCServo *servo, int position)
+{
+  if (servo == servo1)
+  {
+    Dcc.setCV(CV_S0POSITION, position);
+  }
+  else if (servo == servo2)
+  {
+    Dcc.setCV(CV_S1POSITION, position);
+  }
+  else if (servo == servo1)
+  {
+    Dcc.setCV(CV_S2POSITION, position);
   }
 }
 
@@ -632,13 +758,15 @@ void setup()
   Serial.begin(BAUDRATE);
 #endif
   
-  // Turn off the power to the servos by takign the control line high
+  // Turn off the power to the servos by taking the control line high
   pinMode(CONTROL, OUTPUT);
-  digitalWrite(CONTROL, HIGH);
+  digitalWrite(CONTROL, PWR_OFF);
   
   // Configure the DCC CV Programing ACK pin for an output
   pinMode(DccAckPin, OUTPUT);
-  digitalWrite(DccAckPin, LOW);
+  digitalWrite(DccAckPin, ACK_OFF);
+  
+  pinMode(LED, OUTPUT);
   
   // Setup which External Interrupt, the Pin it's associated with that we're using and enable the Pull-Up 
   Dcc.pin(0, DccInPin, 1);
@@ -674,18 +802,22 @@ void setup()
   servo1 = new DCCServo(servoPins[0], Dcc.getCV(CV_S0LIMIT0),
                       Dcc.getCV(CV_S0LIMIT1), Dcc.getCV(CV_S0TRAVEL),
                       Dcc.getCV(CV_S0FLAGS));
+  servo1->setBounceAngle(Dcc.getCV(CV_S0BOUNCE));
   servo2 = new DCCServo(servoPins[1], Dcc.getCV(CV_S1LIMIT0),
                       Dcc.getCV(CV_S1LIMIT1), Dcc.getCV(CV_S1TRAVEL),
                       Dcc.getCV(CV_S1FLAGS));
+  servo2->setBounceAngle(Dcc.getCV(CV_S1BOUNCE));
   servo3 = new DCCServo(servoPins[2], Dcc.getCV(CV_S2LIMIT0),
                       Dcc.getCV(CV_S2LIMIT1), Dcc.getCV(CV_S2TRAVEL),
                       Dcc.getCV(CV_S2FLAGS));
+  servo3->setBounceAngle(Dcc.getCV(CV_S2BOUNCE));
   unsigned int maxSteps = ((unsigned int)Dcc.getCV(CV_MAXMSB) * 256) + Dcc.getCV(CV_MAXLSB);
   stepper = new DCCStepper(Dcc.getCV(CV_STEPMODE), maxSteps,
                 Dcc.getCV(CV_RATIO) * Dcc.getCV(CV_STEPS),
                 Dcc.getCV(CV_MAXRPM), stepperPins[0], stepperPins[1], stepperPins[2], stepperPins[3]);
   unsigned int currentStep = ((unsigned int)Dcc.getCV(CV_CURMSB) * 256) + Dcc.getCV(CV_CURLSB);
   stepper->setCurrentPosition(currentStep);
+  stepper->setReverseDelay(Dcc.getCV(CV_STEPDELAY));
   light0 = new DCCLight(lightPins[0], Dcc.getCV(CV_L0EFFECT));
   light1 = new DCCLight(lightPins[1], Dcc.getCV(CV_L1EFFECT));
   light2 = new DCCLight(lightPins[2], Dcc.getCV(CV_L2EFFECT));
@@ -703,6 +835,18 @@ void setup()
   functions[Dcc.getCV(CV_L2FUNC)] |= FNLIGHT2;
   functions[Dcc.getCV(CV_L3FUNC)] |= FNLIGHT3;
   
+  if (servo1 && (Dcc.getCV(CV_S0FLAGS) & SERVO_INITMID) == 0)
+  {
+    servo1->setAngle(Dcc.getCV(CV_S0POSITION));
+  }
+  if (servo2 && (Dcc.getCV(CV_S1FLAGS) & SERVO_INITMID) == 0)
+  {
+    servo2->setAngle(Dcc.getCV(CV_S1POSITION));
+  }
+  if (servo3 && (Dcc.getCV(CV_S2FLAGS) & SERVO_INITMID) == 0)
+  {
+    servo3->setAngle(Dcc.getCV(CV_S2POSITION));
+  }
   servo1->setActive(false);
   servo2->setActive(false);
   servo3->setActive(false);
@@ -724,8 +868,9 @@ void loop()
 #if DEBUG
     Serial.println("Turn Power on");
 #endif
-    digitalWrite(CONTROL, LOW);
+    digitalWrite(CONTROL, PWR_ON);
     poweron = true;
+    powerNotify = 8;
   }
   // Execute the DCC process frequently in order to ensure
   // the DCC signal processing occurs
@@ -756,4 +901,34 @@ void loop()
     light2->loop();
   if (light3)
     light3->loop();
+  if (skip_millis != millis())
+  {
+    skip_millis = millis();
+  if (powerNotify > 0 && (millis() & 0x7f) == 0)
+  {
+    if (ledState != LOW)
+    {
+      ledState = LOW;
+    }
+    else
+    {
+      ledState = HIGH;
+    }
+    powerNotify--;
+    digitalWrite(LED, ledState);
+  }
+  else if ((millis() & 0x1ff) == 0)
+  {
+    if (ledState != LOW)
+    {
+      ledState = LOW;
+    }
+    else if (dcc_watchdog)
+    {
+      ledState = HIGH;
+      dcc_watchdog = false;
+    }
+    digitalWrite(LED, ledState);
+  }
+  }
 }
