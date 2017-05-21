@@ -1,0 +1,1693 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../XSLT/decoder.xsl"?>
+<!-- Copyright (C) JMRI 2006 All rights reserved -->
+<!-- See the COPYING file for more information on licensing and appropriate use -->
+<decoder-config xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://jmri.org/xml/schema/decoder.xsd">
+  <version author="Mark Riddoch" version="0.1" lastUpdated="20170418"/>
+  <decoder>
+    <family name="Multi Device Function Decoder" mfg="Mark-DIY">
+      <model model="Stepper 3 Servo 4 Lights" numOuts="8" numFns="16">
+        <output name="1" label="Servo 1"/>
+        <output name="2" label="Servo 2"/>
+        <output name="3" label="Servo 3"/>
+        <output name="4" label="Stepper Motor"/>
+        <output name="5" label="Light 1"/>
+        <output name="6" label="Light 2"/>
+        <output name="7" label="Light 3"/>
+        <output name="8" label="Light 4"/>
+      </model>
+    </family>
+    <programming direct="yes" paged="yes" register="yes" ops="yes"/>
+    <variables>
+      <xi:include href="http://jmri.org/xml/decoders/nmra/shortAndLongAddress.xml"/>
+      <!-- CV 7-8 -->
+     <xi:include href="http://jmri.org/xml/decoders/nmra/mfgVersionId.xml"/>	             
+      <variable CV="30" item="Servo 0 Start Angle">
+        <decVal min="0" max="180"/>
+        <label>Servo 0 Start Angle</label>
+      </variable>
+      <variable CV="31" item="Servo 0 End Angle" default="90">
+        <decVal min="0" max="180"/>
+        <label>Servo 0 End Angle</label>
+      </variable>
+      <variable CV="32" item="Servo 0 Travel Time" default="10">
+        <decVal/>
+        <label>Servo 0 Travel Time</label>
+      </variable>
+      <variable CV="33" item="Servo 0 Initial Position" mask="XXXXXXVV" default="0">
+        <enumVal>
+          <enumChoice choice="Last Angle" value="0"/>
+          <enumChoice choice="Start Angle" value="1"/>
+          <enumChoice choice="End Angle" value="2"/>
+          <enumChoice choice="Mid point" value="3"/>
+        </enumVal>
+        <label>Servo 0 Start Position</label>
+      </variable>
+      <variable CV="33" item="Servo 0 Mode" mask="XXXXXVXX" default="0">
+        <enumVal>
+          <enumChoice choice="Relative" value="0"/>
+          <enumChoice choice="Absolute" value="1"/>
+        </enumVal>
+        <label>Servo 0 Mode</label>
+      </variable>
+      <variable CV="33" item="Servo 0 Bounce Start" mask="XXXXVXXX" default="0">
+        <enumVal>
+          <enumChoice choice="Disabled" value="0"/>
+          <enumChoice choice="Enabled" value="1"/>
+        </enumVal>
+        <label>Servo 0 Start Bounce</label>
+      </variable>
+      <variable CV="33" item="Servo 0 Bounce End" mask="XXXVXXXX" default="0">
+        <enumVal>
+          <enumChoice choice="Disabled" value="0"/>
+          <enumChoice choice="Enabled" value="1"/>
+        </enumVal>
+        <label>Servo 0 End Bounce</label>
+      </variable>
+      <variable CV="33" item="Servo 0 Auto Reverse" mask="XXVXXXXX" default="0">
+        <enumVal>
+          <enumChoice choice="Disabled" value="0"/>
+          <enumChoice choice="Enabled" value="1"/>
+        </enumVal>
+        <label>Servo 0 Auto Reverse</label>
+      </variable>
+      <variable CV="33" item="Servo 0 Reverse" mask="VXXXXXXX" default="0">
+        <enumVal>
+          <enumChoice choice="Disabled" value="0"/>
+          <enumChoice choice="Enabled" value="1"/>
+        </enumVal>
+        <label>Servo 0 Reverse</label>
+      </variable>
+      <variable CV="34" item="Servo 0 Function" default="0">
+        <decVal min="0" max="28"/>
+        <label>Servo 0 Function Key</label>
+      </variable>
+      <variable CV="35" item="Servo 0 Bounce" default="8">
+        <decVal min="0" max="28"/>
+        <label>Initial Bounce Angle</label>
+      </variable>
+      <variable CV="40" item="Servo 1 Start Angle" default="0">
+        <decVal min="0" max="180"/>
+        <label>Servo 1 Start Angle</label>
+      </variable>
+      <variable CV="41" item="Servo 1 End Angle" default="90">
+        <decVal min="0" max="180"/>
+        <label>Servo 1 End Angle</label>
+      </variable>
+      <variable CV="42" item="Servo 1 Travel Time" default="10">
+        <decVal/>
+        <label>Servo 1 Travel Time</label>
+      </variable>
+      <variable CV="43" item="Servo 1 Initial Position" mask="XXXXXXVV" default="0">
+        <enumVal>
+          <enumChoice choice="Last Angle" value="0"/>
+          <enumChoice choice="Start Angle" value="1"/>
+          <enumChoice choice="End Angle" value="2"/>
+          <enumChoice choice="Mid point" value="3"/>
+        </enumVal>
+        <label>Servo 1 Start Position</label>
+      </variable>
+      <variable CV="43" item="Servo 1 Mode" mask="XXXXXVXX" default="0">
+        <enumVal>
+          <enumChoice choice="Relative" value="0"/>
+          <enumChoice choice="Absolute" value="1"/>
+        </enumVal>
+        <label>Servo 1 Mode</label>
+      </variable>
+      <variable CV="43" item="Servo 1 Bounce Start" mask="XXXXVXXX" default="0">
+        <enumVal>
+          <enumChoice choice="Disabled" value="0"/>
+          <enumChoice choice="Enabled" value="1"/>
+        </enumVal>
+        <label>Servo 1 Start Bounce</label>
+      </variable>
+      <variable CV="43" item="Servo 1 Bounce End" mask="XXXVXXXX" default="0">
+        <enumVal>
+          <enumChoice choice="Disabled" value="0"/>
+          <enumChoice choice="Enabled" value="1"/>
+        </enumVal>
+        <label>Servo 1 End Bounce</label>
+      </variable>
+      <variable CV="43" item="Servo 1 Auto Reverse" mask="XXVXXXXX" default="0">
+        <enumVal>
+          <enumChoice choice="Disabled" value="0"/>
+          <enumChoice choice="Enabled" value="1"/>
+        </enumVal>
+        <label>Servo 1 Auto Reverse</label>
+      </variable>
+      <variable CV="43" item="Servo 1 Reverse" mask="VXXXXXXX" default="0">
+        <enumVal>
+          <enumChoice choice="Disabled" value="0"/>
+          <enumChoice choice="Enabled" value="1"/>
+        </enumVal>
+        <label>Servo 1 Reverse</label>
+      </variable>
+      <variable CV="44" item="Servo 1 Function" default="1">
+        <decVal min="0" max="28"/>
+        <label>Servo 1 Function Key</label>
+      </variable>
+      <variable CV="45" item="Servo 1 Bounce" default="8">
+        <decVal min="0" max="28"/>
+        <label>Initial Bounce Angle</label>
+      </variable>
+      <variable CV="50" item="Servo 2 Start Angle" default="0">
+        <decVal min="0" max="180"/>
+        <label>Servo 2 Start Angle</label>
+      </variable>
+      <variable CV="51" item="Servo 2 End Angle" default="90">
+        <decVal min="0" max="180"/>
+        <label>Servo 2 End Angle</label>
+      </variable>
+      <variable CV="52" item="Servo 2 Travel Time" default="10">
+        <decVal/>
+        <label>Servo 2 Travel Time</label>
+      </variable>
+      <variable CV="53" item="Servo 2 Initial Position" mask="XXXXXXVV" default="0">
+        <enumVal>
+          <enumChoice choice="Last Angle" value="0"/>
+          <enumChoice choice="Start Angle" value="1"/>
+          <enumChoice choice="End Angle" value="2"/>
+          <enumChoice choice="Mid point" value="3"/>
+        </enumVal>
+        <label>Servo 2 Start Position</label>
+      </variable>
+      <variable CV="53" item="Servo 2 Mode" mask="XXXXXVXX" defaut="0">
+        <enumVal>
+          <enumChoice choice="Relative" value="0"/>
+          <enumChoice choice="Absolute" value="1"/>
+        </enumVal>
+        <label>Servo 2 Mode</label>
+      </variable>
+      <variable CV="53" item="Servo 2 Bounce Start" mask="XXXXVXXX" default="0">
+        <enumVal>
+          <enumChoice choice="Disabled" value="0"/>
+          <enumChoice choice="Enabled" value="1"/>
+        </enumVal>
+        <label>Servo 2 Start Bounce</label>
+      </variable>
+      <variable CV="53" item="Servo 2 Bounce End" mask="XXXVXXXX" default="0">
+        <enumVal>
+          <enumChoice choice="Disabled" value="0"/>
+          <enumChoice choice="Enabled" value="1"/>
+        </enumVal>
+        <label>Servo 2 End Bounce</label>
+      </variable>
+      <variable CV="53" item="Servo 2 Auto Reverse" mask="XXVXXXXX" default="0">
+        <enumVal>
+          <enumChoice choice="Disabled" value="0"/>
+          <enumChoice choice="Enabled" value="1"/>
+        </enumVal>
+        <label>Servo 2 Auto Reverse</label>
+      </variable>
+      <variable CV="53" item="Servo 2 Reverse" mask="VXXXXXXX" default="0">
+        <enumVal>
+          <enumChoice choice="Disabled" value="0"/>
+          <enumChoice choice="Enabled" value="1"/>
+        </enumVal>
+        <label>Servo 2 Reverse</label>
+      </variable>
+      <variable CV="54" item="Servo 2 Function" default="2">
+        <decVal min="0" max="28"/>
+        <label>Servo 2 Function Key</label>
+      </variable>
+      <variable CV="55" item="Servo 2 Bounce" default="8">
+        <decVal min="0" max="28"/>
+        <label>Initial Bounce Angle</label>
+      </variable>
+
+      <variable CV="60" item="Stepper motor steps" default="8">
+        <decVal min="0" max="32"/>
+        <label>Stepper motor steps</label>
+      </variable>
+      <variable CV="61" item="Stepper motor gear ratio" default="64">
+        <decVal min="0" max="255"/>
+        <label>Stepper motor gear ratio</label>
+      </variable>
+      <variable CV="62" item="Stepper motor max RPM" default="60">
+        <decVal min="0" max="255"/>
+        <label>Stepper motor maximum RPM</label>
+      </variable>
+      <variable CV="63" item="Stepper Motor Function" default="3">
+        <decVal min="0" max="28"/>
+        <label>Stepper Motor Function Key</label>
+      </variable>
+      <variable CV="64" item="Stepper Motor Mode" default="0" mask="XXXXXXXV">
+	<enumVal>
+          <enumChoice choice="Continuous" value="0"/>
+          <enumChoice choice="Constrained" value="1"/>
+        </enumVal>
+        <label>Stepper Motor Mode</label>
+      </variable>
+      <variable CV="64" item="Stepper Motor Reversed" default="0" mask="XXXXXXVX">
+	<enumVal>
+          <enumChoice choice="Normal" value="0"/>
+          <enumChoice choice="Reversed" value="1"/>
+        </enumVal>
+        <label>Stepper Motor Reverse</label>
+      </variable>
+      <variable CV="64" item="Stepper Motor Auto Reverse" default="0" mask="XXXXXVXX">
+	<enumVal>
+          <enumChoice choice="Disabled" value="0"/>
+          <enumChoice choice="Enabled" value="1"/>
+        </enumVal>
+        <label>Stepper Motor Auto Reverse</label>
+      </variable>
+      <variable CV="64" item="Stepper Motor Random Delay" default="0" mask="XXXVXXXX">
+	<enumVal>
+          <enumChoice choice="Disabled" value="0"/>
+          <enumChoice choice="Enabled" value="1"/>
+        </enumVal>
+        <label>Stepper Motor Auto Cont</label>
+      </variable>
+      <variable CV="64" item="Stepper Motor Continue On Deselect" default="0" mask="XXXVXXXX">
+	<enumVal>
+          <enumChoice choice="Stop" value="0"/>
+          <enumChoice choice="Continue" value="1"/>
+        </enumVal>
+        <label>Stepper Motor Auto Cont</label>
+      </variable>
+      <variable CV="64" item="Stepper Motor Bipolar" default="0" mask="VXXXXXXX">
+	<enumVal>
+          <enumChoice choice="Unipolar" value="0"/>
+          <enumChoice choice="Bipolar" value="1"/>
+        </enumVal>
+        <label>Stepper Motor Auto Cont</label>
+      </variable>
+
+      <variable CV="75" item="Light 0 Effect" default="0" mask="XXVVVVVV">
+	<enumVal>
+          <enumChoice choice="Constant" value="0"/>
+          <enumChoice choice="Dimable" value="1"/>
+          <enumChoice choice="Dimmed" value="2"/>
+          <enumChoice choice="Flash 50%" value="3"/>
+          <enumChoice choice="Flash 25%" value="4"/>
+          <enumChoice choice="Flash 75%" value="5"/>
+          <enumChoice choice="Flicker" value="6"/>
+          <enumChoice choice="Slow Flicker" value="7"/>
+          <enumChoice choice="Random Flicker" value="8"/>
+          <enumChoice choice="Flourescent" value="9"/>
+          <enumChoice choice="Slow Start" value="10"/>
+          <enumChoice choice="Pulsating" value="11"/>
+        </enumVal>
+        <label>Light 0 Effect</label>
+      </variable>
+      <variable CV="75" item="Light 0 Directional" default="0" mask="VVXXXXXX">
+	<enumVal>
+          <enumChoice choice="Forward" value="2"/>
+          <enumChoice choice="Backward" value="1"/>
+          <enumChoice choice="Both" value="0"/>
+        </enumVal>
+        <label>Light 0 Directional</label>
+      </variable>
+      <variable CV="76" item="Light 0 Period" default="40">
+        <decVal min="0" max="255"/>
+        <label>Light 0 Period</label>
+      </variable>
+      <variable CV="77" item="Light 0 Function" default="5">
+        <decVal min="0" max="28"/>
+        <label>Light 0 Function</label>
+      </variable>
+      <variable CV="80" item="Light 1 Effect" default="0" mask="XXVVVVVV">
+	<enumVal>
+          <enumChoice choice="Constant" value="0"/>
+          <enumChoice choice="Dimable" value="1"/>
+          <enumChoice choice="Dimmed" value="2"/>
+          <enumChoice choice="Flash 50%" value="3"/>
+          <enumChoice choice="Flash 25%" value="4"/>
+          <enumChoice choice="Flash 75%" value="5"/>
+          <enumChoice choice="Flicker" value="6"/>
+          <enumChoice choice="Slow Flicker" value="7"/>
+          <enumChoice choice="Random Flicker" value="8"/>
+          <enumChoice choice="Flourescent" value="9"/>
+          <enumChoice choice="Slow Start" value="10"/>
+          <enumChoice choice="Pulsating" value="11"/>
+        </enumVal>
+        <label>Light 1 Effect</label>
+      </variable>
+      <variable CV="80" item="Light 1 Directional" default="0" mask="VVXXXXXX">
+	<enumVal>
+          <enumChoice choice="Forward" value="2"/>
+          <enumChoice choice="Backward" value="1"/>
+          <enumChoice choice="Both" value="0"/>
+        </enumVal>
+        <label>Light 1 Directional</label>
+      </variable>
+      <variable CV="81" item="Light 1 Period" default="40">
+        <decVal min="0" max="255"/>
+        <label>Light 1 Period</label>
+      </variable>
+      <variable CV="82" item="Light 1 Function" default="6">
+        <decVal min="0" max="28"/>
+        <label>Light 1 Function</label>
+      </variable>
+      <variable CV="85" item="Light 2 Effect" default="0" mask="XXVVVVVV">
+	<enumVal>
+          <enumChoice choice="Constant" value="0"/>
+          <enumChoice choice="Dimable" value="1"/>
+          <enumChoice choice="Dimmed" value="2"/>
+          <enumChoice choice="Flash 50%" value="3"/>
+          <enumChoice choice="Flash 25%" value="4"/>
+          <enumChoice choice="Flash 75%" value="5"/>
+          <enumChoice choice="Flicker" value="6"/>
+          <enumChoice choice="Slow Flicker" value="7"/>
+          <enumChoice choice="Random Flicker" value="8"/>
+          <enumChoice choice="Flourescent" value="9"/>
+          <enumChoice choice="Slow Start" value="10"/>
+          <enumChoice choice="Pulsating" value="11"/>
+        </enumVal>
+        <label>Light 2 Effect</label>
+      </variable>
+      <variable CV="85" item="Light 2 Directional" default="0" mask="VVXXXXXX">
+	<enumVal>
+          <enumChoice choice="Forward" value="2"/>
+          <enumChoice choice="Backward" value="1"/>
+          <enumChoice choice="Both" value="0"/>
+        </enumVal>
+        <label>Light 2 Directional</label>
+      </variable>
+      <variable CV="86" item="Light 2 Period" default="40">
+        <decVal min="0" max="255"/>
+        <label>Light 2 Period</label>
+      </variable>
+      <variable CV="87" item="Light 2 Function" default="7">
+        <decVal min="0" max="28"/>
+        <label>Light 2 Function</label>
+      </variable>
+      <variable CV="90" item="Light 3 Effect" default="0" mask="XXVVVVVV">
+	<enumVal>
+          <enumChoice choice="Constant" value="0"/>
+          <enumChoice choice="Dimable" value="1"/>
+          <enumChoice choice="Dimmed" value="2"/>
+          <enumChoice choice="Flash 50%" value="3"/>
+          <enumChoice choice="Flash 25%" value="4"/>
+          <enumChoice choice="Flash 75%" value="5"/>
+          <enumChoice choice="Flicker" value="6"/>
+          <enumChoice choice="Slow Flicker" value="7"/>
+          <enumChoice choice="Random Flicker" value="8"/>
+          <enumChoice choice="Flourescent" value="9"/>
+          <enumChoice choice="Slow Start" value="10"/>
+          <enumChoice choice="Pulsating" value="11"/>
+        </enumVal>
+        <label>Light 3 Effect</label>
+      </variable>
+      <variable CV="90" item="Light 3 Directional" default="0" mask="VVXXXXXX">
+	<enumVal>
+          <enumChoice choice="Forward" value="2"/>
+          <enumChoice choice="Backward" value="1"/>
+          <enumChoice choice="Both" value="0"/>
+        </enumVal>
+        <label>Light 3 Directional</label>
+      </variable>
+      <variable CV="91" item="Light 3 Period" default="3">
+        <decVal min="0" max="255"/>
+        <label>Light 3 Period</label>
+      </variable>
+      <variable CV="92" item="Light 3 Function" default="8">
+        <decVal min="0" max="28"/>
+        <label>Light 3 Function</label>
+      </variable>
+
+      <variable CV="100" item="Set Piece Steps" default="8">
+        <decVal min="0" max="10"/>
+        <label>Number of steps in set piece animation</label>
+      </variable>
+      <variable CV="101" item="Set Piece Function" default="9">
+        <decVal min="0" max="28"/>
+        <label>Set Piece Function</label>
+      </variable>
+
+      <variable CV="105" item="Step 1 F0" default="0" mask="XXXXXXXV">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 1 F0</label>
+      </variable>
+      <variable CV="105" item="Step 1 F1" default="0" mask="XXXXXXVX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 1 F1</label>
+      </variable>
+      <variable CV="105" item="Step 1 F2" default="0" mask="XXXXXVXX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 1 F2</label>
+      </variable>
+      <variable CV="105" item="Step 1 F3" default="0" mask="XXXXVXXX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 1 F1</label>
+      </variable>
+      <variable CV="105" item="Step 1 F4" default="0" mask="XXXVXXXX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 1 F4</label>
+      </variable>
+      <variable CV="105" item="Step 1 F5" default="0" mask="XXVXXXXX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 1 F5</label>
+      </variable>
+      <variable CV="105" item="Step 1 F6" default="0" mask="XVXXXXXX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 1 F6</label>
+      </variable>
+      <variable CV="105" item="Step 1 F7" default="0" mask="VXXXXXXX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 1 F7</label>
+      </variable>
+      <variable CV="106" item="Step 1 Direction" default="0" mask="VXXXXXXX">
+        <label>Step 1 Direction</label>
+	<enumVal>
+          <enumChoice choice="Forward" value="0"/>
+          <enumChoice choice="Backward" value="1"/>
+        </enumVal>
+      </variable>
+      <variable CV="106" item="Step 1 Speed" default="0" mask="XVVVVVVV">
+        <decVal min="0" max="100"/>
+        <label>Step 1 Speed</label>
+      </variable>
+      <variable CV="108" item="Step 1 Duration" default="0">
+        <splitVal highCV="107"/>
+        <decVal min="0" max="65535"/>
+        <label>Step 1 Duration</label>
+      </variable>
+      <variable CV="109" item="Step 2 F0" default="0" mask="XXXXXXXV">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 2 F0</label>
+      </variable>
+      <variable CV="109" item="Step 2 F1" default="0" mask="XXXXXXVX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 2 F1</label>
+      </variable>
+      <variable CV="109" item="Step 2 F2" default="0" mask="XXXXXVXX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 2 F2</label>
+      </variable>
+      <variable CV="109" item="Step 2 F3" default="0" mask="XXXXVXXX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 2 F1</label>
+      </variable>
+      <variable CV="109" item="Step 2 F4" default="0" mask="XXXVXXXX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 2 F4</label>
+      </variable>
+      <variable CV="109" item="Step 2 F5" default="0" mask="XXVXXXXX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 2 F5</label>
+      </variable>
+      <variable CV="109" item="Step 2 F6" default="0" mask="XVXXXXXX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 2 F6</label>
+      </variable>
+      <variable CV="109" item="Step 2 F7" default="0" mask="VXXXXXXX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 2 F7</label>
+      </variable>
+      <variable CV="110" item="Step 2 Direction" default="0" mask="VXXXXXXX">
+        <label>Step 2 Direction</label>
+	<enumVal>
+          <enumChoice choice="Forward" value="0"/>
+          <enumChoice choice="Backward" value="1"/>
+        </enumVal>
+      </variable>
+      <variable CV="110" item="Step 2 Speed" default="0" mask="XVVVVVVV">
+        <decVal min="0" max="100"/>
+        <label>Step 2 Speed</label>
+      </variable>
+      <variable CV="112" item="Step 2 Duration" default="0">
+        <splitVal highCV="111"/>
+        <decVal min="0" max="65535"/>
+        <label>Step 2 Duration</label>
+      </variable>
+      <variable CV="113" item="Step 3 F0" default="0" mask="XXXXXXXV">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 3 F0</label>
+      </variable>
+      <variable CV="113" item="Step 3 F1" default="0" mask="XXXXXXVX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 3 F1</label>
+      </variable>
+      <variable CV="113" item="Step 3 F2" default="0" mask="XXXXXVXX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 3 F2</label>
+      </variable>
+      <variable CV="113" item="Step 3 F3" default="0" mask="XXXXVXXX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 3 F1</label>
+      </variable>
+      <variable CV="113" item="Step 3 F4" default="0" mask="XXXVXXXX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 3 F4</label>
+      </variable>
+      <variable CV="113" item="Step 3 F5" default="0" mask="XXVXXXXX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 3 F5</label>
+      </variable>
+      <variable CV="113" item="Step 3 F6" default="0" mask="XVXXXXXX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 3 F6</label>
+      </variable>
+      <variable CV="113" item="Step 3 F7" default="0" mask="VXXXXXXX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 3 F7</label>
+      </variable>
+      <variable CV="114" item="Step 3 Direction" default="0" mask="VXXXXXXX">
+        <label>Step 3 Direction</label>
+	<enumVal>
+          <enumChoice choice="Forward" value="0"/>
+          <enumChoice choice="Backward" value="1"/>
+        </enumVal>
+      </variable>
+      <variable CV="114" item="Step 3 Speed" default="0" mask="XVVVVVVV">
+        <decVal min="0" max="100"/>
+        <label>Step 3 Speed</label>
+      </variable>
+      <variable CV="116" item="Step 3 Duration" default="0">
+        <splitVal highCV="115"/>
+        <decVal min="0" max="65535"/>
+        <label>Step 3 Duration</label>
+      </variable>
+      <variable CV="117" item="Step 4 F0" default="0" mask="XXXXXXXV">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 4 F0</label>
+      </variable>
+      <variable CV="117" item="Step 4 F1" default="0" mask="XXXXXXVX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 4 F1</label>
+      </variable>
+      <variable CV="117" item="Step 4 F2" default="0" mask="XXXXXVXX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 4 F2</label>
+      </variable>
+      <variable CV="117" item="Step 4 F3" default="0" mask="XXXXVXXX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 4 F1</label>
+      </variable>
+      <variable CV="117" item="Step 4 F4" default="0" mask="XXXVXXXX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 4 F4</label>
+      </variable>
+      <variable CV="117" item="Step 4 F5" default="0" mask="XXVXXXXX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 4 F5</label>
+      </variable>
+      <variable CV="117" item="Step 4 F6" default="0" mask="XVXXXXXX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 4 F6</label>
+      </variable>
+      <variable CV="117" item="Step 4 F7" default="0" mask="VXXXXXXX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 4 F7</label>
+      </variable>
+      <variable CV="118" item="Step 4 Direction" default="0" mask="VXXXXXXX">
+        <label>Step 4 Direction</label>
+	<enumVal>
+          <enumChoice choice="Forward" value="0"/>
+          <enumChoice choice="Backward" value="1"/>
+        </enumVal>
+      </variable>
+      <variable CV="118" item="Step 4 Speed" default="0" mask="XVVVVVVV">
+        <decVal min="0" max="100"/>
+        <label>Step 4 Speed</label>
+      </variable>
+      <variable CV="120" item="Step 4 Duration" default="0">
+        <splitVal highCV="119"/>
+        <decVal min="0" max="65535"/>
+        <label>Step 4 Duration</label>
+      </variable>
+      <variable CV="121" item="Step 5 F0" default="0" mask="XXXXXXXV">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 5 F0</label>
+      </variable>
+      <variable CV="121" item="Step 5 F1" default="0" mask="XXXXXXVX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 5 F1</label>
+      </variable>
+      <variable CV="121" item="Step 5 F2" default="0" mask="XXXXXVXX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 5 F2</label>
+      </variable>
+      <variable CV="121" item="Step 5 F3" default="0" mask="XXXXVXXX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 5 F1</label>
+      </variable>
+      <variable CV="121" item="Step 5 F4" default="0" mask="XXXVXXXX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 5 F4</label>
+      </variable>
+      <variable CV="121" item="Step 5 F5" default="0" mask="XXVXXXXX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 5 F5</label>
+      </variable>
+      <variable CV="121" item="Step 5 F6" default="0" mask="XVXXXXXX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 5 F6</label>
+      </variable>
+      <variable CV="121" item="Step 5 F7" default="0" mask="VXXXXXXX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 5 F7</label>
+      </variable>
+      <variable CV="122" item="Step 5 Direction" default="0" mask="VXXXXXXX">
+        <label>Step 5 Direction</label>
+	<enumVal>
+          <enumChoice choice="Forward" value="0"/>
+          <enumChoice choice="Backward" value="1"/>
+        </enumVal>
+      </variable>
+      <variable CV="122" item="Step 5 Speed" default="0" mask="XVVVVVVV">
+        <decVal min="0" max="100"/>
+        <label>Step 5 Speed</label>
+      </variable>
+      <variable CV="124" item="Step 5 Duration" default="0">
+        <splitVal highCV="123"/>
+        <decVal min="0" max="65535"/>
+        <label>Step 5 Duration</label>
+      </variable>
+      <variable CV="125" item="Step 6 F0" default="0" mask="XXXXXXXV">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 6 F0</label>
+      </variable>
+      <variable CV="125" item="Step 6 F1" default="0" mask="XXXXXXVX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 6 F1</label>
+      </variable>
+      <variable CV="125" item="Step 6 F2" default="0" mask="XXXXXVXX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 6 F2</label>
+      </variable>
+      <variable CV="125" item="Step 6 F3" default="0" mask="XXXXVXXX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 6 F1</label>
+      </variable>
+      <variable CV="125" item="Step 6 F4" default="0" mask="XXXVXXXX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 6 F4</label>
+      </variable>
+      <variable CV="125" item="Step 6 F5" default="0" mask="XXVXXXXX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 6 F5</label>
+      </variable>
+      <variable CV="125" item="Step 6 F6" default="0" mask="XVXXXXXX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 6 F6</label>
+      </variable>
+      <variable CV="125" item="Step 6 F7" default="0" mask="VXXXXXXX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 6 F7</label>
+      </variable>
+      <variable CV="126" item="Step 6 Direction" default="0" mask="VXXXXXXX">
+        <label>Step 6 Direction</label>
+	<enumVal>
+          <enumChoice choice="Forward" value="0"/>
+          <enumChoice choice="Backward" value="1"/>
+        </enumVal>
+      </variable>
+      <variable CV="126" item="Step 6 Speed" default="0" mask="XVVVVVVV">
+        <decVal min="0" max="100"/>
+        <label>Step 6 Speed</label>
+      </variable>
+      <variable CV="128" item="Step 6 Duration" default="0">
+        <splitVal highCV="127"/>
+        <decVal min="0" max="65535"/>
+        <label>Step 6 Duration</label>
+      </variable>
+      <variable CV="129" item="Step 7 F0" default="0" mask="XXXXXXXV">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 7 F0</label>
+      </variable>
+      <variable CV="129" item="Step 7 F1" default="0" mask="XXXXXXVX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 7 F1</label>
+      </variable>
+      <variable CV="129" item="Step 7 F2" default="0" mask="XXXXXVXX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 7 F2</label>
+      </variable>
+      <variable CV="129" item="Step 7 F3" default="0" mask="XXXXVXXX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 7 F1</label>
+      </variable>
+      <variable CV="129" item="Step 7 F4" default="0" mask="XXXVXXXX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 7 F4</label>
+      </variable>
+      <variable CV="129" item="Step 7 F5" default="0" mask="XXVXXXXX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 7 F5</label>
+      </variable>
+      <variable CV="129" item="Step 7 F6" default="0" mask="XVXXXXXX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 7 F6</label>
+      </variable>
+      <variable CV="129" item="Step 7 F7" default="0" mask="VXXXXXXX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 7 F7</label>
+      </variable>
+      <variable CV="130" item="Step 7 Direction" default="0" mask="VXXXXXXX">
+        <label>Step 7 Direction</label>
+	<enumVal>
+          <enumChoice choice="Forward" value="0"/>
+          <enumChoice choice="Backward" value="1"/>
+        </enumVal>
+      </variable>
+      <variable CV="130" item="Step 7 Speed" default="0" mask="XVVVVVVV">
+        <decVal min="0" max="100"/>
+        <label>Step 7 Speed</label>
+      </variable>
+      <variable CV="132" item="Step 7 Duration" default="0">
+        <splitVal highCV="131"/>
+        <decVal min="0" max="65535"/>
+        <label>Step 7 Duration</label>
+      </variable>
+      <variable CV="133" item="Step 8 F0" default="0" mask="XXXXXXXV">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 8 F0</label>
+      </variable>
+      <variable CV="133" item="Step 8 F1" default="0" mask="XXXXXXVX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 8 F1</label>
+      </variable>
+      <variable CV="133" item="Step 8 F2" default="0" mask="XXXXXVXX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 8 F2</label>
+      </variable>
+      <variable CV="133" item="Step 8 F3" default="0" mask="XXXXVXXX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 8 F1</label>
+      </variable>
+      <variable CV="133" item="Step 8 F4" default="0" mask="XXXVXXXX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 8 F4</label>
+      </variable>
+      <variable CV="133" item="Step 8 F5" default="0" mask="XXVXXXXX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 8 F5</label>
+      </variable>
+      <variable CV="133" item="Step 8 F6" default="0" mask="XVXXXXXX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 8 F6</label>
+      </variable>
+      <variable CV="133" item="Step 8 F7" default="0" mask="VXXXXXXX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 8 F7</label>
+      </variable>
+      <variable CV="134" item="Step 8 Direction" default="0" mask="VXXXXXXX">
+        <label>Step 8 Direction</label>
+	<enumVal>
+          <enumChoice choice="Forward" value="0"/>
+          <enumChoice choice="Backward" value="1"/>
+        </enumVal>
+      </variable>
+      <variable CV="134" item="Step 8 Speed" default="0" mask="XVVVVVVV">
+        <decVal min="0" max="100"/>
+        <label>Step 8 Speed</label>
+      </variable>
+      <variable CV="136" item="Step 8 Duration" default="0">
+        <splitVal highCV="135"/>
+        <decVal min="0" max="65535"/>
+        <label>Step 8 Duration</label>
+      </variable>
+      <variable CV="137" item="Step 9 F0" default="0" mask="XXXXXXXV">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 9 F0</label>
+      </variable>
+      <variable CV="137" item="Step 9 F1" default="0" mask="XXXXXXVX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 9 F1</label>
+      </variable>
+      <variable CV="137" item="Step 9 F2" default="0" mask="XXXXXVXX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 9 F2</label>
+      </variable>
+      <variable CV="137" item="Step 9 F3" default="0" mask="XXXXVXXX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 9 F1</label>
+      </variable>
+      <variable CV="137" item="Step 9 F4" default="0" mask="XXXVXXXX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 9 F4</label>
+      </variable>
+      <variable CV="137" item="Step 9 F5" default="0" mask="XXVXXXXX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 9 F5</label>
+      </variable>
+      <variable CV="137" item="Step 9 F6" default="0" mask="XVXXXXXX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 9 F6</label>
+      </variable>
+      <variable CV="137" item="Step 9 F7" default="0" mask="VXXXXXXX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 9 F7</label>
+      </variable>
+      <variable CV="138" item="Step 9 Direction" default="0" mask="VXXXXXXX">
+        <label>Step 9 Direction</label>
+	<enumVal>
+          <enumChoice choice="Forward" value="0"/>
+          <enumChoice choice="Backward" value="1"/>
+        </enumVal>
+      </variable>
+      <variable CV="138" item="Step 9 Speed" default="0" mask="XVVVVVVV">
+        <decVal min="0" max="100"/>
+        <label>Step 9 Speed</label>
+      </variable>
+      <variable CV="140" item="Step 9 Duration" default="0">
+        <splitVal highCV="139"/>
+        <decVal min="0" max="65535"/>
+        <label>Step 9 Duration</label>
+      </variable>
+      <variable CV="141" item="Step 10 F0" default="0" mask="XXXXXXXV">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 10 F0</label>
+      </variable>
+      <variable CV="141" item="Step 10 F1" default="0" mask="XXXXXXVX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 10 F1</label>
+      </variable>
+      <variable CV="141" item="Step 10 F2" default="0" mask="XXXXXVXX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 10 F2</label>
+      </variable>
+      <variable CV="141" item="Step 10 F3" default="0" mask="XXXXVXXX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 10 F1</label>
+      </variable>
+      <variable CV="141" item="Step 10 F4" default="0" mask="XXXVXXXX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 10 F4</label>
+      </variable>
+      <variable CV="141" item="Step 10 F5" default="0" mask="XXVXXXXX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 10 F5</label>
+      </variable>
+      <variable CV="141" item="Step 10 F6" default="0" mask="XVXXXXXX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 10 F6</label>
+      </variable>
+      <variable CV="141" item="Step 10 F7" default="0" mask="VXXXXXXX">
+	<enumVal>
+          <enumChoice choice="Off" value="0"/>
+          <enumChoice choice="On" value="1"/>
+	</enumVal>
+        <label>Step 10 F7</label>
+      </variable>
+      <variable CV="142" item="Step 10 Direction" default="0" mask="VXXXXXXX">
+        <label>Step 10 Direction</label>
+	<enumVal>
+          <enumChoice choice="Forward" value="0"/>
+          <enumChoice choice="Backward" value="1"/>
+        </enumVal>
+      </variable>
+      <variable CV="142" item="Step 10 Speed" default="0" mask="XVVVVVVV">
+        <decVal min="0" max="100"/>
+        <label>Step 10 Speed</label>
+      </variable>
+      <variable CV="144" item="Step 10 Duration" default="0">
+        <splitVal highCV="143"/>
+        <decVal min="0" max="65535"/>
+        <label>Step 10 Duration</label>
+      </variable>
+
+
+    </variables>
+  </decoder>
+  <pane>
+    <name>Servo 0</name>
+    <column>
+      <row>
+        <grid weightx="1" anchor="LINE_END">
+          <griditem gridx="0" gridy="0" weightx="r">
+            <label><text>Start Angle</text></label>
+          </griditem>
+          <griditem gridx="1" gridy="0" weightx="r">
+              <display item="Servo 0 Start Angle" format="hslider" label="" layout="left"/>
+              <display item="Servo 0 Start Angle" label="degrees" layout="right"/>
+          </griditem>
+          <griditem gridx="0" gridy="1" weightx="r">
+            <label><text>End Angle</text></label>
+          </griditem>
+          <griditem gridx="1" gridy="1" weightx="r">
+            <display item="Servo 0 End Angle" format="hslider" label="" layout="left"/>
+            <display item="Servo 0 End Angle" label="degrees" layout="right" />
+          </griditem>
+          <griditem gridx="0" gridy="2" weightx="r">
+            <label><text>Bounce Angle</text></label>
+          </griditem>
+          <griditem gridx="1" gridy="2" weightx="r">
+            <display item="Servo 0 Bounce" format="hslider" label="" layout="left"/>
+            <display item="Servo 0 Bounce" label="degrees" layout="right" />
+          </griditem>
+        </grid>
+      </row>
+      <row>
+         <label> </label>
+      </row>
+      <row>
+        <grid weightx="1" anchor="LINE_END">
+          <griditem gridx="0" gridy="0" weightx="r">
+            <label><text>Travel Time</text></label>
+          </griditem>
+          <griditem gridx="1" gridy="0" weightx="r">
+             <display item="Servo 0 Travel Time" label="" layout="left" /><label><text>s</text></label>
+          </griditem>
+          <griditem gridx="0" gridy="1" weightx="r">
+            <label><text>Initial Position</text></label>
+          </griditem>
+          <griditem gridx="1" gridy="1" weightx="r">
+            <display item="Servo 0 Initial Position" label=""/>
+          </griditem>
+          <griditem gridx="0" gridy="2" weightx="r">
+            <label><text>Start Position Bounce</text></label>
+          </griditem>
+          <griditem gridx="1" gridy="2" weightx="r">
+	    <display item="Servo 0 Start Bounce" label=""/>
+          </griditem>
+          <griditem gridx="0" gridy="3" weightx="r">
+            <label><text>End Position Bounce</text></label>
+          </griditem>
+          <griditem gridx="1" gridy="3" weightx="r">
+            <display item="Servo 0 End Bounce" label=""/>
+          </griditem>
+          <griditem gridx="0" gridy="4" weightx="r">
+            <label><text>Auto Reverse</text></label>
+          </griditem>
+          <griditem gridx="1" gridy="4" weightx="r">
+            <display item="Servo 0 Auto Reverse" label=""/>
+          </griditem>
+          <griditem gridx="0" gridy="5" weightx="r">
+            <label><text>Reverse</text></label>
+          </griditem>
+          <griditem gridx="1" gridy="5" weightx="r">
+            <display item="Servo 0 Reverse" label=""/>
+          </griditem>
+          <griditem gridx="0" gridy="6" weightx="r">
+            <label><text>Function Key</text></label>
+          </griditem>
+          <griditem gridx="1" gridy="6" weightx="r">
+            <display item="Servo 0 Function" label=""/>
+          </griditem>
+        </grid>
+      </row>
+    </column>
+  </pane>
+  <pane>
+    <name>Servo 1</name>
+    <column>
+      <row>
+        <grid weightx="1" anchor="LINE_END">
+          <griditem gridx="0" gridy="0" weightx="r">
+            <label><text>Start Angle</text></label>
+          </griditem>
+          <griditem gridx="1" gridy="0" weightx="r">
+              <display item="Servo 1 Start Angle" format="hslider" label="" layout="left"/>
+              <display item="Servo 1 Start Angle" label="degrees" layout="right"/>
+          </griditem>
+          <griditem gridx="0" gridy="1" weightx="r">
+            <label><text>End Angle</text></label>
+          </griditem>
+          <griditem gridx="1" gridy="1" weightx="r">
+            <display item="Servo 1 End Angle" format="hslider" label="" layout="left"/>
+            <display item="Servo 1 End Angle" label="degrees" layout="right" />
+          </griditem>
+          <griditem gridx="0" gridy="2" weightx="r">
+            <label><text>Bounce Angle</text></label>
+          </griditem>
+          <griditem gridx="1" gridy="2" weightx="r">
+            <display item="Servo 1 Bounce" format="hslider" label="" layout="left"/>
+            <display item="Servo 1 Bounce" label="degrees" layout="right" />
+          </griditem>
+        </grid>
+      </row>
+      <row>
+         <label> </label>
+      </row>
+      <row>
+        <grid weightx="1" anchor="LINE_END">
+          <griditem gridx="0" gridy="0" weightx="r">
+            <label><text>Travel Time</text></label>
+          </griditem>
+          <griditem gridx="1" gridy="0" weightx="r">
+             <display item="Servo 1 Travel Time" label="" layout="left" /><label><text>s</text></label>
+          </griditem>
+          <griditem gridx="0" gridy="1" weightx="r">
+            <label><text>Initial Position</text></label>
+          </griditem>
+          <griditem gridx="1" gridy="1" weightx="r">
+            <display item="Servo 1 Initial Position" label=""/>
+          </griditem>
+          <griditem gridx="0" gridy="2" weightx="r">
+            <label><text>Start Position Bounce</text></label>
+          </griditem>
+          <griditem gridx="1" gridy="2" weightx="r">
+	    <display item="Servo 1 Start Bounce" label=""/>
+          </griditem>
+          <griditem gridx="0" gridy="3" weightx="r">
+            <label><text>End Position Bounce</text></label>
+          </griditem>
+          <griditem gridx="1" gridy="3" weightx="r">
+            <display item="Servo 1 End Bounce" label=""/>
+          </griditem>
+          <griditem gridx="0" gridy="4" weightx="r">
+            <label><text>Auto Reverse</text></label>
+          </griditem>
+          <griditem gridx="1" gridy="4" weightx="r">
+            <display item="Servo 1 Auto Reverse" label=""/>
+          </griditem>
+          <griditem gridx="0" gridy="5" weightx="r">
+            <label><text>Reverse</text></label>
+          </griditem>
+          <griditem gridx="1" gridy="5" weightx="r">
+            <display item="Servo 1 Reverse" label=""/>
+          </griditem>
+          <griditem gridx="0" gridy="6" weightx="r">
+            <label><text>Function Key</text></label>
+          </griditem>
+          <griditem gridx="1" gridy="6" weightx="r">
+            <display item="Servo 1 Function" label=""/>
+          </griditem>
+        </grid>
+      </row>
+    </column>
+  </pane>
+  <pane>
+    <name>Servo 2</name>
+    <column>
+      <row>
+        <grid weightx="1" anchor="LINE_END">
+          <griditem gridx="0" gridy="0" weightx="r">
+            <label><text>Start Angle</text></label>
+          </griditem>
+          <griditem gridx="1" gridy="0" weightx="r">
+              <display item="Servo 2 Start Angle" format="hslider" label="" layout="left"/>
+              <display item="Servo 2 Start Angle" label="degrees" layout="right"/>
+          </griditem>
+          <griditem gridx="0" gridy="1" weightx="r">
+            <label><text>End Angle</text></label>
+          </griditem>
+          <griditem gridx="1" gridy="1" weightx="r">
+            <display item="Servo 2 End Angle" format="hslider" label="" layout="left"/>
+            <display item="Servo 2 End Angle" label="degrees" layout="right" />
+          </griditem>
+          <griditem gridx="0" gridy="2" weightx="r">
+            <label><text>Bounce Angle</text></label>
+          </griditem>
+          <griditem gridx="1" gridy="2" weightx="r">
+            <display item="Servo 2 Bounce" format="hslider" label="" layout="left"/>
+            <display item="Servo 2 Bounce" label="degrees" layout="right" />
+          </griditem>
+        </grid>
+      </row>
+      <row>
+         <label> </label>
+      </row>
+      <row>
+        <grid weightx="1" anchor="LINE_END">
+          <griditem gridx="0" gridy="0" weightx="r">
+            <label><text>Travel Time</text></label>
+          </griditem>
+          <griditem gridx="1" gridy="0" weightx="r">
+             <display item="Servo 2 Travel Time" label="" layout="left" /><label><text>s</text></label>
+          </griditem>
+          <griditem gridx="0" gridy="1" weightx="r">
+            <label><text>Initial Position</text></label>
+          </griditem>
+          <griditem gridx="1" gridy="1" weightx="r">
+            <display item="Servo 2 Initial Position" label=""/>
+          </griditem>
+          <griditem gridx="0" gridy="2" weightx="r">
+            <label><text>Start Position Bounce</text></label>
+          </griditem>
+          <griditem gridx="1" gridy="2" weightx="r">
+	    <display item="Servo 2 Start Bounce" label=""/>
+          </griditem>
+          <griditem gridx="0" gridy="3" weightx="r">
+            <label><text>End Position Bounce</text></label>
+          </griditem>
+          <griditem gridx="1" gridy="3" weightx="r">
+            <display item="Servo 2 End Bounce" label=""/>
+          </griditem>
+          <griditem gridx="0" gridy="4" weightx="r">
+            <label><text>Auto Reverse</text></label>
+          </griditem>
+          <griditem gridx="1" gridy="4" weightx="r">
+            <display item="Servo 2 Auto Reverse" label=""/>
+          </griditem>
+          <griditem gridx="0" gridy="5" weightx="r">
+            <label><text>Reverse</text></label>
+          </griditem>
+          <griditem gridx="1" gridy="5" weightx="r">
+            <display item="Servo 2 Reverse" label=""/>
+          </griditem>
+          <griditem gridx="0" gridy="6" weightx="r">
+            <label><text>Function Key</text></label>
+          </griditem>
+          <griditem gridx="1" gridy="6" weightx="r">
+            <display item="Servo 2 Function" label=""/>
+          </griditem>
+        </grid>
+      </row>
+    </column>
+  </pane>
+  <pane>
+    <name>Stepper Motor</name>
+    <column>
+      <row>
+        <grid weightx="1" anchor="LINE_END">
+          <griditem gridx="0" gridy="0" weightx="r">
+		<label><text>Motor steps per revolution</text></label>
+          </griditem>
+          <griditem gridx="1" gridy="0" weightx="l">
+        	<display item="Stepper motor steps" label=""/>
+          </griditem>
+          <griditem gridx="0" gridy="1" weightx="r">
+          	<label><text>Gear Ratio</text></label>
+          </griditem>
+          <griditem gridx="1" gridy="1" weightx="l">
+            	<display item="Stepper motor gear ratio" label=""/><label><text> : 1</text></label>
+          </griditem>
+          <griditem gridx="0" gridy="2" weightx="r">
+		<label><text>RPM at full throttle</text></label>
+          </griditem>
+          <griditem gridx="1" gridy="2" weightx="l">
+        	<display item="Stepper motor max RPM" label=""/>
+          </griditem>
+          <griditem gridx="0" gridy="3" weightx="r">
+		<label><text>Function Key</text></label>
+          </griditem>
+          <griditem gridx="1" gridy="3" weightx="l">
+        	<display item="Stepper Motor Function" label=""/>
+          </griditem>
+          <griditem gridx="0" gridy="4" weightx="r">
+		<label><text>Mode</text></label>
+          </griditem>
+          <griditem gridx="1" gridy="4" weightx="l">
+        	<display item="Stepper Motor Mode" label=""/>
+          </griditem>
+          <griditem gridx="0" gridy="5" weightx="r">
+		<label><text>Normal Direction</text></label>
+          </griditem>
+          <griditem gridx="1" gridy="5" weightx="l">
+        	<display item="Stepper Motor Reverse" label=""/>
+          </griditem>
+          <griditem gridx="0" gridy="6" weightx="r">
+		<label><text>Auto Reverse</text></label>
+          </griditem>
+          <griditem gridx="1" gridy="6" weightx="l">
+        	<display item="Stepper Motor Auto Reverse" label=""/>
+          </griditem>
+          <griditem gridx="0" gridy="7" weightx="r">
+		<label><text>Random Reverse Delay</text></label>
+          </griditem>
+          <griditem gridx="1" gridy="7" weightx="l">
+        	<display item="Stepper Motor Random Delay" label=""/>
+          </griditem>
+          <griditem gridx="0" gridy="8" weightx="r">
+		<label><text>Deselect Action</text></label>
+          </griditem>
+          <griditem gridx="1" gridy="8" weightx="l">
+        	<display item="Stepper Motor Continue On Deselect" label=""/>
+          </griditem>
+          <griditem gridx="0" gridy="9" weightx="r">
+		<label><text>Motor Type</text></label>
+          </griditem>
+          <griditem gridx="1" gridy="9" weightx="l">
+        	<display item="Stepper Motor Bipolar" label=""/>
+          </griditem>
+        </grid>
+      </row>
+    </column>
+  </pane>
+  <pane>
+    <name>Lights</name>
+      <column>
+          <row>
+            <grid>
+              <griditem gridx="0" gridy="0">
+                <label><text><b>Light 0</b></text></label>
+              </griditem>
+              <griditem gridx="1" gridy="0">
+  	        <display item="Light 0 Effect" label="Effect"/>
+              </griditem>
+              <griditem gridx="2" gridy="0">
+	        <display item="Light 0 Directional" label="Direction"/>
+              </griditem>
+              <griditem gridx="3" gridy="0">
+	        <display item="Light 0 Period" label="Period"/>
+              </griditem>
+              <griditem gridx="4" gridy="0">
+	        <display item="Light 0 Function" label="Function Key" />
+              </griditem>
+              <griditem gridx="0" gridy="1">
+                <label><text><b>Light 1</b></text></label>
+              </griditem>
+              <griditem gridx="1" gridy="1">
+	        <display item="Light 1 Effect" label="Effect"/>
+              </griditem>
+              <griditem gridx="2" gridy="1">
+	        <display item="Light 1 Directional" label="Direction"/>
+              </griditem>
+              <griditem gridx="3" gridy="1">
+	        <display item="Light 1 Period" label="Period"/>
+              </griditem>
+              <griditem gridx="4" gridy="1">
+	        <display item="Light 1 Function" label="Function Key" />
+              </griditem>
+              <griditem gridx="0" gridy="2">
+                <label><text><b>Light 2</b></text></label>
+              </griditem>
+              <griditem gridx="1" gridy="2">
+	        <display item="Light 2 Effect" label="Effect"/>
+              </griditem>
+              <griditem gridx="2" gridy="2">
+	        <display item="Light 2 Directional" label="Direction"/>
+              </griditem>
+              <griditem gridx="3" gridy="2">
+	        <display item="Light 2 Period" label="Period"/>
+              </griditem>
+              <griditem gridx="4" gridy="2">
+	        <display item="Light 2 Function" label="Function Key" />
+              </griditem>
+              <griditem gridx="0" gridy="3">
+                <label><text><b>Light 3</b></text></label>
+              </griditem>
+              <griditem gridx="1" gridy="3">
+	        <display item="Light 3 Effect" label="Effect"/>
+              </griditem>
+              <griditem gridx="2" gridy="3">
+	        <display item="Light 3 Directional" label="Direction"/>
+              </griditem>
+              <griditem gridx="3" gridy="3">
+	        <display item="Light 3 Period" label="Period"/>
+              </griditem>
+              <griditem gridx="4" gridy="3">
+	        <display item="Light 3 Function" label="Function Key" />
+              </griditem>
+            </grid>
+	  </row>
+        </column>
+  </pane>
+  <pane>
+    <name>Set Piece</name>
+    <column>
+       <row>
+         <display item="Set Piece Steps" label="No. of Steps"/>
+         <display item="Set Piece Function" label="Function Key"/>
+      </row>
+      <row>
+        <grid weightx="1" anchor="LINE_END">
+         <griditem girdx="0" gridy="0">
+           <label><text>Step 1:</text></label>
+         </griditem>
+         <griditem girdx="1" gridy="0">
+	 <display item="Step 1 F0" label="F0" format="checkbox"/>
+	 <display item="Step 1 F1" label="F1" format="checkbox"/>
+	 <display item="Step 1 F2" label="F2" format="checkbox"/>
+	 <display item="Step 1 F3" label="F3" format="checkbox"/>
+	 <display item="Step 1 F4" label="F4" format="checkbox"/>
+	 <display item="Step 1 F5" label="F5" format="checkbox"/>
+	 <display item="Step 1 F6" label="F6" format="checkbox"/>
+	 <display item="Step 1 F7" label="F7" format="checkbox"/>
+         <display item="Step 1 Speed" label="Speed"/><label><text>%</text></label>
+         <display item="Step 1 Direction" label="Direction"/>
+         <display item="Step 1 Duration" label="Duration"/>
+         </griditem>
+         <griditem girdx="0" gridy="1">
+           <label><text>Step 2:</text></label>
+         </griditem>
+         <griditem girdx="1" gridy="1">
+	 <display item="Step 2 F0" label="F0" format="checkbox"/>
+	 <display item="Step 2 F1" label="F1" format="checkbox"/>
+	 <display item="Step 2 F2" label="F2" format="checkbox"/>
+	 <display item="Step 2 F3" label="F3" format="checkbox"/>
+	 <display item="Step 2 F4" label="F4" format="checkbox"/>
+	 <display item="Step 2 F5" label="F5" format="checkbox"/>
+	 <display item="Step 2 F6" label="F6" format="checkbox"/>
+	 <display item="Step 2 F7" label="F7" format="checkbox"/>
+         <display item="Step 2 Speed" label="Speed"/><label><text>%</text></label>
+         <display item="Step 2 Direction" label="Direction"/>
+         <display item="Step 2 Duration" label="Duration"/>
+         </griditem>
+         <griditem girdx="0" gridy="2">
+           <label><text>Step 3:</text></label>
+         </griditem>
+         <griditem girdx="1" gridy="2">
+	 <display item="Step 3 F0" label="F0" format="checkbox"/>
+	 <display item="Step 3 F1" label="F1" format="checkbox"/>
+	 <display item="Step 3 F2" label="F2" format="checkbox"/>
+	 <display item="Step 3 F3" label="F3" format="checkbox"/>
+	 <display item="Step 3 F4" label="F4" format="checkbox"/>
+	 <display item="Step 3 F5" label="F5" format="checkbox"/>
+	 <display item="Step 3 F6" label="F6" format="checkbox"/>
+	 <display item="Step 3 F7" label="F7" format="checkbox"/>
+         <display item="Step 3 Speed" label="Speed"/><label><text>%</text></label>
+         <display item="Step 3 Direction" label="Direction"/>
+         <display item="Step 3 Duration" label="Duration"/>
+         </griditem>
+         <griditem girdx="0" gridy="3">
+           <label><text>Step 4:</text></label>
+         </griditem>
+         <griditem girdx="1" gridy="3">
+	 <display item="Step 4 F0" label="F0" format="checkbox"/>
+	 <display item="Step 4 F1" label="F1" format="checkbox"/>
+	 <display item="Step 4 F2" label="F2" format="checkbox"/>
+	 <display item="Step 4 F3" label="F3" format="checkbox"/>
+	 <display item="Step 4 F4" label="F4" format="checkbox"/>
+	 <display item="Step 4 F5" label="F5" format="checkbox"/>
+	 <display item="Step 4 F6" label="F6" format="checkbox"/>
+	 <display item="Step 4 F7" label="F7" format="checkbox"/>
+         <display item="Step 4 Speed" label="Speed"/><label><text>%</text></label>
+         <display item="Step 4 Direction" label="Direction"/>
+         <display item="Step 4 Duration" label="Duration"/>
+         </griditem>
+         <griditem girdx="0" gridy="4">
+           <label><text>Step 5:</text></label>
+         </griditem>
+         <griditem girdx="1" gridy="4">
+	 <display item="Step 5 F0" label="F0" format="checkbox"/>
+	 <display item="Step 5 F1" label="F1" format="checkbox"/>
+	 <display item="Step 5 F2" label="F2" format="checkbox"/>
+	 <display item="Step 5 F3" label="F3" format="checkbox"/>
+	 <display item="Step 5 F4" label="F4" format="checkbox"/>
+	 <display item="Step 5 F5" label="F5" format="checkbox"/>
+	 <display item="Step 5 F6" label="F6" format="checkbox"/>
+	 <display item="Step 5 F7" label="F7" format="checkbox"/>
+         <display item="Step 5 Speed" label="Speed"/><label><text>%</text></label>
+         <display item="Step 5 Direction" label="Direction"/>
+         <display item="Step 5 Duration" label="Duration"/>
+         </griditem>
+         <griditem girdx="0" gridy="5">
+           <label><text>Step 6:</text></label>
+         </griditem>
+         <griditem girdx="1" gridy="5">
+	 <display item="Step 6 F0" label="F0" format="checkbox"/>
+	 <display item="Step 6 F1" label="F1" format="checkbox"/>
+	 <display item="Step 6 F2" label="F2" format="checkbox"/>
+	 <display item="Step 6 F3" label="F3" format="checkbox"/>
+	 <display item="Step 6 F4" label="F4" format="checkbox"/>
+	 <display item="Step 6 F5" label="F5" format="checkbox"/>
+	 <display item="Step 6 F6" label="F6" format="checkbox"/>
+	 <display item="Step 6 F7" label="F7" format="checkbox"/>
+         <display item="Step 6 Speed" label="Speed"/><label><text>%</text></label>
+         <display item="Step 6 Direction" label="Direction"/>
+         <display item="Step 6 Duration" label="Duration"/>
+         </griditem>
+         <griditem girdx="0" gridy="6">
+           <label><text>Step 7:</text></label>
+         </griditem>
+         <griditem girdx="1" gridy="6">
+	 <display item="Step 7 F0" label="F0" format="checkbox"/>
+	 <display item="Step 7 F1" label="F1" format="checkbox"/>
+	 <display item="Step 7 F2" label="F2" format="checkbox"/>
+	 <display item="Step 7 F3" label="F3" format="checkbox"/>
+	 <display item="Step 7 F4" label="F4" format="checkbox"/>
+	 <display item="Step 7 F5" label="F5" format="checkbox"/>
+	 <display item="Step 7 F6" label="F6" format="checkbox"/>
+	 <display item="Step 7 F7" label="F7" format="checkbox"/>
+         <display item="Step 7 Speed" label="Speed"/><label><text>%</text></label>
+         <display item="Step 7 Direction" label="Direction"/>
+         <display item="Step 7 Duration" label="Duration"/>
+         </griditem>
+         <griditem girdx="0" gridy="7">
+           <label><text>Step 8:</text></label>
+         </griditem>
+         <griditem girdx="1" gridy="7">
+	 <display item="Step 8 F0" label="F0" format="checkbox"/>
+	 <display item="Step 8 F1" label="F1" format="checkbox"/>
+	 <display item="Step 8 F2" label="F2" format="checkbox"/>
+	 <display item="Step 8 F3" label="F3" format="checkbox"/>
+	 <display item="Step 8 F4" label="F4" format="checkbox"/>
+	 <display item="Step 8 F5" label="F5" format="checkbox"/>
+	 <display item="Step 8 F6" label="F6" format="checkbox"/>
+	 <display item="Step 8 F7" label="F7" format="checkbox"/>
+         <display item="Step 8 Speed" label="Speed"/><label><text>%</text></label>
+         <display item="Step 8 Direction" label="Direction"/>
+         <display item="Step 8 Duration" label="Duration"/>
+         </griditem>
+         <griditem girdx="0" gridy="8">
+           <label><text>Step 9:</text></label>
+         </griditem>
+         <griditem girdx="1" gridy="8">
+	 <display item="Step 9 F0" label="F0" format="checkbox"/>
+	 <display item="Step 9 F1" label="F1" format="checkbox"/>
+	 <display item="Step 9 F2" label="F2" format="checkbox"/>
+	 <display item="Step 9 F3" label="F3" format="checkbox"/>
+	 <display item="Step 9 F4" label="F4" format="checkbox"/>
+	 <display item="Step 9 F5" label="F5" format="checkbox"/>
+	 <display item="Step 9 F6" label="F6" format="checkbox"/>
+	 <display item="Step 9 F7" label="F7" format="checkbox"/>
+         <display item="Step 9 Speed" label="Speed"/><label><text>%</text></label>
+         <display item="Step 9 Direction" label="Direction"/>
+         <display item="Step 9 Duration" label="Duration"/>
+         </griditem>
+         <griditem girdx="0" gridy="9">
+           <label><text>Step 10:</text></label>
+         </griditem>
+         <griditem girdx="1" gridy="9">
+	 <display item="Step 10 F0" label="F0" format="checkbox"/>
+	 <display item="Step 10 F1" label="F1" format="checkbox"/>
+	 <display item="Step 10 F2" label="F2" format="checkbox"/>
+	 <display item="Step 10 F3" label="F3" format="checkbox"/>
+	 <display item="Step 10 F4" label="F4" format="checkbox"/>
+	 <display item="Step 10 F5" label="F5" format="checkbox"/>
+	 <display item="Step 10 F6" label="F6" format="checkbox"/>
+	 <display item="Step 10 F7" label="F7" format="checkbox"/>
+         <display item="Step 10 Speed" label="Speed"/><label><text>%</text></label>
+         <display item="Step 10 Direction" label="Direction"/>
+         <display item="Step 10 Duration" label="Duration"/>
+         </griditem>
+      </grid>
+      </row>
+    </column>
+  </pane>
+   
+
+</decoder-config>
